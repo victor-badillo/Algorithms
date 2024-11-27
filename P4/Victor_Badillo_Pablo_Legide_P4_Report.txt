@@ -1,0 +1,151 @@
+ALGORITHMS P4
+----------------------------------------------------------------------
+Group: 6.1
+
+Victor Nathanael Badillo Aldama - victor.badillo@udc.es
+Pablo Legide Vidal - p.legide@udc.es
+
+Machine used for the practice:
+Processor: AMD Ryzen 7 5700U with Radeon Graphics (16 CPUs), ~1.8GHz
+OS: Ubuntu 22.04 (64-bit)
+RAM: 16 GB
+---------------------------------------------------------------------
+
+The goal of this practice is to empirically verify the theoretical analysis of the efficiency of some Max Heaps operations as well as the Heap Sort algorithm.
+
+After implementing the heap functions needed to perform the create_heap and delete_max operations a test function is used to check their correctness, 
+to do this we display some integer arrays with different initialization (random, ascending and descending) and we check if the heap is created correctly 
+with these arrays and also if we obtain the proper max. The same is done for the Heap sort algorithm, but in this case we just display the final sorted array
+to see if it is ordered properly.
+
+Once this was done the next step consists in measuring create_heap execution time with an ascending initialization for different n values and empirically verifying
+its complexity. Likewise, we perform this steps with the heap sort function but in this case we include the descending and random initialization as well.
+
+For the first step some input values are used which follow a geometric sequence of ratio 2. Moreover those values are shown in a table along with 
+the measurements used to empirically verify each algorithm complexity, said measures consist on the values given by applying to each algorithm a different 
+slightly underestimated bound, a tight bound and a slightly overestimated bound using the sequence of previously obtained times.
+
+
+IMPORTANT NOTES:
+
+- For each table the underestimated bound will be defined as f(n), the tight bound as g(n) and the overestimated bound as h(n). Also n will refer to the number
+used to calculate each heap operation and t(n) will refer to the obtained execution time measurements.
+
+- To measure the execution time, microseconds (μs) will be used.
+
+- Using a confidence threshold of 500 microseconds, execution times below this timestamp will correspond to an average time over 1000 executions of the algorithm.
+Values obtained by this method are marked with the (*) character at the start of the tuple (which corresponds to the n column).
+
+
+				CREATE_HEAP
+____________________________________________________________________________
+____________________________________________________________________________
+
+Table 1: study of the complexity of create_heap with ascending initialization, this table demonstrates how the create_heap operations runs in time O(n)
+f(n)=n^(0.80)
+g(n)=n^(1.00)
+h(n)=n^(1.20)
+
+          n           t(n)          t(n)/f(n)      t(n)/g(n)      t(n)/h(n)
+___________________________________________________________________________
+(*)      500          5.852        0.040563        0.011704      0.0033771
+(*)     1000         11.388        0.045336        0.011388      0.0028605
+(*)     2000         23.258        0.053180        0.011629      0.0025429
+(*)     4000         46.807        0.061470        0.011702      0.0022276
+(*)     8000         91.584        0.069079        0.011448      0.0018972
+(*)    16000        179.128        0.077601        0.011195      0.0016152
+(*)    32000        357.434        0.088936        0.011170      0.0014029
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is increasing exponentially as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound oscillates little around the constant c=0.011...
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is decreasing exponentially as n grows,
+except for the step between n=4000 and n=8000 which decreases more than the observed trend.
+
+
+
+				HEAP SORT
+____________________________________________________________________________
+____________________________________________________________________________
+
+
+
+Table 1: study of the complexity of heap sort algorithm with ascending initialization
+f(n)=n^(0.80)
+g(n)=n^(1.09)
+h(n)=n^(1.30)
+
+          n           t(n)          t(n)/f(n)      t(n)/g(n)      t(n)/h(n)
+___________________________________________________________________________
+(*)      500         43.334        0.300367        0.049539      0.0134328
+(*)     1000        101.643        0.404648        0.054586      0.0127961
+(*)     2000        224.743        0.513881        0.056697      0.0114907
+(*)     4000        479.422        0.629608        0.056816      0.0099550
+        8000       1018.000        0.767849        0.056673      0.0085848
+       16000       2095.000        0.907587        0.054789      0.0071751
+       32000       4455.000        1.108480        0.054731      0.0061966
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is increasing exponentially as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound gives values between c=0.054... and c=0.056...,
+except for the first n iteration which gives a lower value than expected.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is slightly decreasing as n grows.
+
+
+
+Table 2: study of the complexity of heap sort algorithm with random initialization
+f(n)=n^(0.80)
+g(n)=n^(1.10)
+h(n)=n^(1.30)
+
+          n           t(n)          t(n)/f(n)      t(n)/g(n)      t(n)/h(n)
+___________________________________________________________________________
+(*)      500         58.575        0.406010        0.062928      0.0181573
+(*)     1000        122.230        0.486606        0.061260      0.0153878
+(*)     2000        263.303        0.602049        0.061563      0.0134622
+        4000        558.000        0.732801        0.060865      0.0115866
+        8000       1209.000        0.911915        0.061522      0.0101955
+       16000       2615.000        1.132859        0.062078      0.0089560
+       32000       5577.000        1.387652        0.061764      0.0077572
+												
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is exponentially increasing as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound gives values in the interval between c=0.061... and c=0.062...
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is decreasing  slightly and exponentially as n grows.
+
+
+
+Table 3: study of the complexity of heap algorithm with descending initialization:
+f(n)=n^(0.80)
+g(n)=n^(1.12)
+h(n)=n^(1.30)
+
+          n           t(n)          t(n)/f(n)      t(n)/g(n)      t(n)/h(n)
+___________________________________________________________________________
+(*)      500         38.735        0.268490        0.036750      0.0120072
+(*)     1000         92.362        0.367700        0.040317      0.0116277
+(*)     2000        214.273        0.489941        0.043034      0.0109554
+(*)     4000        458.087        0.601589        0.042329      0.0095120
+        8000        963.000        0.726364        0.040942      0.0081210
+       16000       2056.000        0.890691        0.040217      0.0070415
+       32000       4329.000        1.077129        0.038960      0.0060213
+       
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is increasing exponentially as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound stays around the interval c=0.040... and c=0.043,
+with a little lower value than expected for n=500 and also for n=32000, which are the first and last iterations respectively.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is decreasing as n grows.
+
+
+
+CONCLUSION:
+- As it is said in the practical assignment create_heap runs in time O(n) and this can be observed with the first table in which the tight bound
+ is 1 so that we obtain a complexity of O(n^1) as requested.
+
+- For the descending array case we obtain the lowest complexity which will be O(n^1.09), obtaining a similar one with the random initialization 
+case which is O(n^1.10) and finally for the case of the descending initialization we obtain the highest complexity which is O(n^1.12). However,
+in all cases we obtain a similar complexity to the theoretical one which is O(n * log n).
+
+- For the Heap sort algorithm the best case is the one with a descending array initialization, because create_heap with this initialization
+gives the lowest times as it is already ordered with respect to how heaps work, whereas the random and descending initialization give a 
+higher time and specifically, the random initialization is the one with the highest times, as it performs more steps in order to obtain the sorted array.

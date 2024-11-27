@@ -1,0 +1,341 @@
+ALGORITHMS P2
+----------------------------------------------------------------------
+Group: 6.1
+
+Victor Nathanael Badillo Aldama - victor.badillo@udc.es
+Pablo Legide Vidal - p.legide@udc.es
+
+Machine used for the practice:
+Processor: AMD Ryzen 7 5700U with Radeo Graphics (16 CPUs), ~1.8GHz
+OS: Ubuntu 22.04 (64-bit)
+RAM: 16 GB
+---------------------------------------------------------------------
+
+The goal of this practice is to empirically verify the theoretical analysis of the efficiency of two algorithms which are used to sort number arrays(insertion sort and quicksort), defined as it follows:
+
+
+		INSERTION SORT
+
+Input: [7,20,14,16,6,3,20,7,-14,-6,6,4,-5,-18,-13,-1,12,6,2,18]
+Output: [-18,-14,-13,-6,-5,-1,2,3,4,6,6,6,7,7,12,14,16,18,20,20]
+
+		QUICKSORT
+		
+Input: [11,8,15,19,-10,7,1,19,-18,4,-19,16,16,7,-5,-19,7,1,-9,-2]
+Output: [-19,-19,-18,-10,-9,-5,-2,1,1,4,7,7,7,8,11,15,16,16,19,19]
+
+
+
+After implementing the two algorithms a test function is used to check their correctness, to do this we display some integer arrays with different initialization(random, ascending and descending) and we check if they end up order or not.
+
+Once this was done the next step consists in comparing each algorithm execution time in different cases and empirically verifying its complexity.
+
+For the first step some input values are used which follow a geometric sequence of ratio 2. Moreover those values are shown in a table along with the measurements used to empirically verify each algorithm complexity, said measures consist on the values given by applying to each algorithm a different slightly underestimated bound, a tight bound and a slightly overestimated bound using the sequence of previously obtained times.
+
+Moreover, we will check the functionality of quicksort algorithm with different thresholds.
+
+IMPORTANT NOTES:
+
+- For each table the underestimated bound will be defined as f(n), the tight bound as g(n) and the overestimated bound as h(n). Also n will refer to the number used to calculate each fib algorithm and t(n) will refer to the obtained execution time measurements.
+
+- To measure the execution time, microseconds (μs) will be used.
+
+- Using a confidence threshold of 500 microseconds, execution times below this timestamp will correspond to an average time over 1000 executions of the algorithm. Values obtained by this method are marked with the (*) character at the start of the tuple(which corresponds to the n column).
+
+
+				INSERTION SORT
+____________________________________________________________________________
+____________________________________________________________________________
+
+Table 1: study of the complexity of insertion sort algorithm with random initialization
+f(n)=n^(1.8)
+g(n)=n^(2.0)
+h(n)=n^(2.2)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+(*)      500        192.701        0.002671        0.000771      0.0002224
+        1000        790.000        0.003145        0.000790      0.0001984
+        2000       2893.000        0.003307        0.000723      0.0001582
+        4000      11847.000        0.003890        0.000740      0.0001410
+        8000      50425.000        0.004754        0.000788      0.0001306
+       16000     188389.000        0.005101        0.000736      0.0001062
+       32000     747480.000        0.005812        0.000730      0.0000917
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is increasing as n grows, 
+except for the first two iterations in which times are very similar.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound gives time values in the interval from 0.00072 to 0.00079.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is decreasing as n grows.
+
+
+
+Table 2: study of the complexity of insertion sort algorithm with ascending initialization
+f(n)=n^(0.8)
+g(n)=n^(1.0)
+h(n)=n^(1.2)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+(*)      500          2.204        0.015277        0.004408      0.0012719
+(*)     1000          4.367        0.017385        0.004367      0.0010969
+(*)     2000          8.787        0.020092        0.004394      0.0009607
+(*)     4000         17.631        0.023154        0.004408      0.0008391
+(*)     8000         35.229        0.026572        0.004404      0.0007298
+(*)    16000         70.556        0.030566        0.004410      0.0006362
+(*)    32000        140.966        0.035075        0.004405      0.0005533
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is increasing exponentially as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound oscillates little around the constant c=0.0044.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is slightly decreasing as n grows.
+
+
+
+Table 3: study of the complexity of insertion sort algorithm with descending initialization
+f(n)=n^(1.8)
+g(n)=n^(2.0)
+h(n)=n^(2.2)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+(*)      500        369.985        0.005129        0.001480      0.0004270
+        1000       1487.000        0.005920        0.001487      0.0003735
+        2000       5873.000        0.006714        0.001468      0.0003211
+        4000      23517.000        0.007721        0.001470      0.0002798
+        8000      93919.000        0.008855        0.001467      0.0002432
+       16000     375932.000        0.010179        0.001468      0.0002119
+       32000    1515563.000        0.011784        0.001480      0.0001859
+												
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is slightly increasing as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound stays around the constant c=0.0014.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is decreasing as n grows.
+
+
+
+				QUICKSORT
+____________________________________________________________________________
+____________________________________________________________________________
+
+Table 1: study of the complexity of quicksort algorithm with random initialization and threshold 1:
+f(n)=n^(0.80)
+g(n)=n^(1.09)
+h(n)=n^(1.40)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+(*)      500         49.783        0.345068        0.056912      0.0082894
+(*)     1000        107.287        0.427117        0.057617      0.0067694
+(*)     2000        234.096        0.535266        0.059057      0.0055970
+        4000        509.840        0.669554        0.060421      0.0046190
+        8000       1068.000        0.805563        0.059457      0.0036664
+       16000       2262.000        0.979934        0.059156      0.0029426
+       32000       4919.000        1.223931        0.060431      0.0024247
+       
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is increasing rapidly and exponentially as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound stays around the constant c=0.059,
+except for the first two n values 500 and 1000 in which values unexpectedly decrease to 0.056912 and 0.57617, respectively.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is rapidly and exponentially decreasing as n grows.
+
+
+
+Table 2: study of the complexity of quicksort algorithm with ascending initialization and threshold 1:
+f(n)=n^(0.80)
+g(n)=n^(1.07)
+h(n)=n^(1.40)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+(*)      500         31.048        0.215208        0.040192      0.0051698
+(*)     1000         65.776        0.261859        0.040557      0.0041502
+(*)     2000        136.608        0.312358        0.040121      0.0032661
+(*)     4000        282.540        0.371050        0.039525      0.0025597
+        8000        602.000        0.454072        0.040113      0.0020667
+       16000       1264.000        0.547584        0.040118      0.0016443
+       32000       2500.000        0.622042        0.037795      0.0012323
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is exponentially  increasing as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound oscillates little around the constant c=0.040, 
+except for n=32000 in which the time descends to 0.037795.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is exponentially decreasing as n grows.
+
+
+
+Table 3: study of the complexity of quicksort algorithm with descending initialization and threshold 1:
+f(n)=n^(0.80)
+g(n)=n^(1.06)
+h(n)=n^(1.40)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+(*)      500         30.923        0.214341        0.042596      0.0051490
+(*)     1000         64.879        0.258288        0.042865      0.0040936
+(*)     2000        135.755        0.310407        0.043019      0.0032457
+(*)     4000        285.295        0.374668        0.043362      0.0025847
+        8000        577.000        0.435215        0.042063      0.0019808
+       16000       1279.000        0.554083        0.044720      0.0016638
+       32000       2538.000        0.631497        0.042563      0.0012511
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is increasing exponentially as n grows,
+stopping this exponential growth when n=32000 with a lower time increase than expected.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound oscillates little around the constant c=0.043.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is exponentially decreasing as n grows,
+stopping this exponential decrease when n=32000 with a higher time reduction than expected.
+
+
+
+Table 4: study of the complexity of quicksort algorithm with random initialization and threshold 10:
+f(n)=n^(0.80)
+g(n)=n^(1.11)
+h(n)=n^(1.40)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+(*)      500         42.968        0.297830        0.043380      0.0071546
+(*)     1000         90.503        0.360299        0.042331      0.0057104
+(*)     2000        197.885        0.452469        0.042881      0.0047312
+(*)     4000        429.046        0.563451        0.043074      0.0038870
+        8000        940.000        0.709016        0.043722      0.0032270
+       16000       1966.000        0.851702        0.042365      0.0025575
+       32000       4217.000        1.049261        0.042100      0.0020787
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is rapidly and exponentially increasing as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound oscillates little around the constant c=0.042.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is exponentially decreasing as n grows, 
+with a bigger decrease than expected when reaching n=16000.
+
+
+
+Table 5: study of the complexity of quicksort algorithm with ascending initialization and threshold 10:
+f(n)=n^(0.80)
+g(n)=n^(1.11)
+h(n)=n^(1.40)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+(*)      500         17.553        0.121668        0.017721      0.0029228
+(*)     1000         38.266        0.152340        0.017898      0.0024144
+(*)     2000         83.023        0.189834        0.017991      0.0019850
+(*)     4000        178.580        0.234523        0.017929      0.0016179
+(*)     8000        383.526        0.289283        0.017839      0.0013166
+       16000        798.000        0.345706        0.017196      0.0010381
+       32000       1701.000        0.423238        0.016982      0.0008385
+       
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is exponentially increasing as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound oscillates little around the constant c=0.017.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is exponentially decreasing as n grows.
+
+
+
+Table 6: study of the complexity of quicksort algorithm with descending initialization and threshold 10:
+f(n)=n^(0.80)
+g(n)=n^(1.10)
+h(n)=n^(1.40)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+(*)      500         20.162        0.139752        0.021660      0.0033572
+(*)     1000         43.038        0.171337        0.021570      0.0027155
+(*)     2000         92.941        0.212512        0.021731      0.0022221
+(*)     4000        198.818        0.261101        0.021687      0.0018012
+(*)     8000        420.855        0.317439        0.021416      0.0014448
+       16000        899.000        0.389461        0.021342      0.0011695
+       32000       1935.000        0.481461        0.021430      0.0009538
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is exponentially increasing as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound stays around the constant c=0.021.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is exponentially decreasing as n grows.
+
+
+
+Table 7: study of the complexity of quicksort algorithm with random initialization and threshold 100:
+f(n)=n^(0.80)
+g(n)=n^(1.11)
+h(n)=n^(1.40)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+(*)      500         45.559        0.315790        0.045996      0.0075861
+(*)     1000         99.817        0.397379        0.046688      0.0062980
+(*)     2000        216.243        0.494445        0.046860      0.0051701
+(*)     4000        467.541        0.614005        0.046939      0.0042358
+        8000        984.000        0.742204        0.045768      0.0033781
+       16000       2175.000        0.942244        0.046869      0.0028294
+       32000       4512.000        1.122662        0.045046      0.0022241
+        
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is rapidly and exponentially increasing as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound oscillates little around the constant c=0.046.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is exponentially decreasing as n grows, 
+specially decreasing for the first n values: 500, 1000 and 2000.
+
+
+
+Table 8: study of the complexity of quicksort algorithm with ascending initialization and threshold 100:
+f(n)=n^(0.80)
+g(n)=n^(1.23)
+h(n)=n^(1.40)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+(*)      500          7.685        0.053268        0.003681      0.0012796
+(*)     1000         18.779        0.074761        0.003834      0.0011849
+(*)     2000         43.971        0.100541        0.003827      0.0010513
+(*)     4000        101.268        0.132992        0.003758      0.0009175
+(*)     8000        227.599        0.171672        0.003601      0.0007813
+       16000        545.000        0.236102        0.003676      0.0007090
+       32000       1113.000        0.276933        0.003200      0.0005486
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is rapidly and exponentially increasing as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound oscillates little around the constant c=0.0037, 
+except for n=32000 in which it decreases unexpectedly to 0.003200.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is slightly decreasing as n grows.
+
+
+
+Table 9: study of the complexity of quicksort algorithm with descending initialization and threshold 100:
+f(n)=n^(0.80)
+g(n)=n^(1.12)
+h(n)=n^(1.40)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+(*)      500         12.050        0.083524        0.011432      0.0020065
+(*)     1000         24.942        0.099296        0.010888      0.0015737
+(*)     2000         53.316        0.121908        0.010708      0.0012747
+(*)     4000        116.427        0.152899        0.010758      0.0010548
+(*)     8000        258.488        0.194970        0.010990      0.0008874
+       16000        602.000        0.260796        0.011776      0.0007831
+       32000       1206.000        0.300073        0.010854      0.0005945
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is exponentially increasing as n grows,
+having a lower time increase than expected when n=32000.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound oscillates little around the constant c=0.010.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is exponentially decreasing as n grows.
+
+
+CONCLUSION:
+- For the Insertion sort algorithm it is shown how the best case is the one with ascending initialization, the one with the lowest times by far, in which computational complexity goes down to n (instead of random and descending intializations in which it's n^2, average case complexity for this algorithm) because the algorithm was already sorted. For the rest of the cases, it is seen how the worst case would be the descending array in which times can grow up to 2538.000 milliseconds and then random initialization in which times are approximately half for each n of the descending one.
+
+- In the case of the Quicksort algorithm even though its complexity varies for each threshold and initialization, as a consequence of the random pivot election, all of them are close to the average complexity which is O(n*logn), apart from that it is seen how independently of the threshold, the lowest times are obtained with the ascending array initialization, followed closely by the descending one and with the random initialization having almost double the time for each n of the ascending or descending ones (except for the threshold 100 in which it is almost 5 times slower than the descending array times and almost 8 times slower than the ascending one). 
+
+Talking about the thresholds it can be stated that for ascending and descending initializations the lowest times are obtained with threshold 100 , but in the case of the random initialization threshold 1 is the best. Furthermore ascending and descending initializations take similar times for thresholds 1 and 10, random initialization is where the difference arises, obtaining specially high values for threshold 100. 
+
+This happens because with threshold 100 you perform less iterations of the function sort_aux, thus dividing the whole array in small partially sorted arrays which are ordered using insertion_sort, and as insertion_sort works better with this partially sorted arrays we obtain lower times taking advantage of it (this does not happen with threshold 10 because the decrease in the number of iterations is not noticeable as with 100). For the case of the random array the better time is obtained with threshold one because we do not use insertion sort at all, which for non-partially sorted arrays is much slower, therefore obtaining better times for random initialization by only using Quicksort.
+
+- When comparing the performance of Quicksort with the performance of Insertion sort, it can be seen how except for the ordered array case (in which Insertion sort is the fastest), Quicksort is faster independently of its threshold and how big is the number n, and that is the reason why when using Quicksort with thresholds bigger than 1 we take advantage of Insertion Sort for ordering those partially sorted small arrays, obtaining lower times for the whole array at the end.
+
+
+
+
+

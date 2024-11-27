@@ -1,0 +1,105 @@
+ALGORITMOS P1
+----------------------------------------------------------------------
+Group: 6.1
+
+Victor Nathanael Badillo Aldama - victor.badillo@udc.es
+Pablo Legide Vidal - p.legide@udc.es
+
+Machine used for the practice: (in this case a virtual machine)
+Processor: AMD Ryzen 7 5700U with Radeo Graphics (16 CPUs), ~1.8GHz
+OS: Ubuntu 22.04 (64-bit)
+RAM: 4 GB
+---------------------------------------------------------------------
+
+The goal of this practice is to empirically verify the theoretical analisys of the efficiency of three algorithms which are used to calculate the fibonacci sequence, defined as it follows:
+
+		|	0 if n=0
+	fib(n)	|	fib(n)=1 if n=1
+		|	fib(n-1)+fib(n-2) if n>=2
+
+After implementing the three algorithms a test function is used to check their correctness, said function compares some values for the three algorithms and compares them to see if they are equal.
+
+Once this was done the next step consists in comparing each algorithm execution time and empirically verifying its complexity.
+
+For the first step some input values are used which follow a geometric sequence of ratio 2 in the case of fib1 and a geometric sequence of ratio 10 in the case of fib2 and fib3. Moreover those values are shown in a table along with the measurements used to empirically verify each algorithm complexity, said measures consist on the values given by applying to each algorithm a different slightly underestimated bound, a tight bound and a slightly overestimated bound using the sequence of previously obtained times.
+
+IMPORTANT NOTES:
+
+- For each table the underestimated bound will be defined as f(n), the tight bound as g(n) and the overestimated bound as h(n). Also n will refer to the number used to calculate each fib algorithm and t(n) will refer to the obtained execution time measurements.
+
+- To measure the execution time, microseconds (μs) will be used.
+
+- Using a confidence threshold of 500 microseconds, execution times below this timestamp will correspond to an average time over 1000 executions of the algorithm. Values obtained by this method are marked with the * character at their right.
+
+
+Table 1: study of the complexity of fib1
+f(n)=(1.1)^n
+g(n)=((1+sqrt(5))/2))^n
+h(n)=2^n
+
+         n            t(n)	  t(n)/f(n)      t(n)/g(n)      t(n)/h(n)
+-----------------------------------------------------------------------------
+          2          0.006 *       0.004959       0.002292       0.001500
+          4          0.018 *       0.012294       0.002626       0.001125
+          8          0.144 *       0.067177       0.003065       0.000562
+         16          6.565 *       1.428735       0.002975       0.000100
+         32      14209.000       672.972921       0.002917       0.000003
+-----------------------------------------------------------------------------	
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is heavily increasing as n grows.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound tends to stabilise around a constant value of 0.0029.. as n increases, having some different measures for n=2 and n=4.
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is decreasing as n grows.
+
+
+
+
+Table 2: study of the complexity of fib2
+f(n)=n^(0.8)
+g(n)=n
+h(n)=n log(n)
+
+         n            t(n)	  t(n)/f(n)      t(n)/g(n)      t(n)/h(n)
+-----------------------------------------------------------------------------
+        1000          1.748 *      0.006959       0.001748       0.012075
+       10000         30.164 *      0.019032       0.003016       0.027782
+      100000        205.250 *      0.020525       0.002053       0.023630
+     1000000       1862.000        0.029511       0.001862       0.025724
+    10000000      22834.000        0.057356       0.002283       0.036804
+-----------------------------------------------------------------------------				
+
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is increasing as n grows, having a specially big value when n is 10000000.
+- The fourth column which corresponds to the quotient between the measured time and the tight bound stays between the values 0.0017.. and 0.0022.. except for the case of n=10000 in which it goes up to 0.0030..
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is increasing as n grows except for n=10000 which gives an even bigger value than the expected.
+
+
+
+
+Table 3: study of the complexity of fib3
+f(n)=sqrt(log n)
+g(n)=log(n)
+h(n)0n^(0.5)
+
+         n            t(n)	  t(n)/f(n)      t(n)/g(n)      t(n)/h(n)
+-----------------------------------------------------------------------------
+        1000          0.037 *      0.014078       0.005356       0.001170
+       10000          0.047 *      0.015487       0.005103       0.000470
+      100000          0.057 *      0.016799       0.004951       0.000180
+     1000000          0.071 *      0.019102       0.005139       0.000071
+    10000000          0.081 *      0.020176       0.005025       0.000026
+-----------------------------------------------------------------------------	
+				
+Discussion:
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is increasing as n grows, having a bigger increase in the case in which n=1000000
+- The fourth column which corresponds to the quotient between the measured time and the tight bound stays between the values 0.0049.. and 0.0051.. except for n=1000 reaching a value of 0.0053..
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is decreasing as n grows
+
+
+
+
+CONCLUSION:
+The first algorithm (fib1) has a complexity of ((1+sqrt(5))/2))^n which is bigger than the complexity of the second algorithm (fib2) with a complexity of n and also bigger than the third algorithm complexity (fib3) which is log(n).Furthermore, the first algorithm works faster with small numbers while the second and the third work faster for big numbers, being the third the fastest of them.
+
+
+

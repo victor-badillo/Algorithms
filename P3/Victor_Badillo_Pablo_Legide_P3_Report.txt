@@ -1,0 +1,102 @@
+ALGORITHMS P3
+----------------------------------------------------------------------
+Group: 6.1
+
+Victor Nathanael Badillo Aldama - victor.badillo@udc.es
+Pablo Legide Vidal - p.legide@udc.es
+
+Machine used for the practice:
+Processor: AMD Ryzen 7 5700U with Radeon Graphics (16 CPUs), ~1.8GHz
+OS: Ubuntu 22.04 (64-bit)
+RAM: 16 GB
+---------------------------------------------------------------------
+
+The goal of this practice is to study and empirically verify the computational complexity of the insert and find operations on binary search tree for random integers between an interval.
+
+Firstly the indicated tree functions: createtree, isempty tree, find, deletetree, leftchild, rightchild, element, numberofrepetitions, height and visualize, are implemented. Then a test function is used to check if they work properly and to do this we print and check the height of the tree several times after inserting and deleting different elements in the tree.
+
+Once this was done the next step consists in comparing each tree operation execution time, in this case just the insert and find functions in different cases and empirically verifying its complexity.
+
+For the first step some input values are used which follow a geometric sequence of ratio 2. Moreover those values are shown in a table along with the measurements used to empirically verify each tree operation complexity, said measures consist on the values given by applying to each operation a different slightly underestimated bound, a tight bound and a slightly overestimated bound using the sequence of previously obtained times.
+
+IMPORTANT NOTES:
+
+- For each table the underestimated bound will be defined as f(n), the tight bound as g(n) and the overestimated bound as h(n). Also n will refer to the number used to calculate each tree insertion and search and t(n) will refer to the obtained execution time measurements.
+
+- To measure the execution time, microseconds (μs) will be used.
+
+- In this case n will start at 8000 so that times below the confidence threshold of 500 microseconds will be avoided, as in this case the computation of an average time is not possible. This is mainly because performing an average time would obligate us to empty the tree in each iteration of a given loop that performs the operation k times, which wouldn't let us to measure the time of emptying that tree because the tree would be already empty each of those k times.
+
+
+				INSERTION 
+____________________________________________________________________________
+____________________________________________________________________________
+
+Table 1: study of the complexity of the insertion operation for n random integers in 
+the range [-n,...,+n]
+
+f(n)=n^(1.00)
+g(n)=n^(1.19)
+h(n)=n^(1.65)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+        8000       1341.000        0.167625        0.030391      0.0004868
+       16000       2780.000        0.173750        0.027615      0.0003215
+       32000       6470.000        0.202188        0.028169      0.0002385
+       64000      14099.000        0.220297        0.026905      0.0001656
+      128000      29610.000        0.231328        0.024766      0.0001108
+      256000      79140.000        0.309140        0.029013      0.0000944
+
+Discussion:
+
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is increasing as n grows, noticing a bigger increase when n=256000.
+
+- The fourth column which corresponds to the quotient between the measured time and the tight bound gives time values in the interval between 0.026... and 0.030..., except for the iteration n=128000 gives a lower value time than expected.
+
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is decreasing exponentially and quickly as n grows.
+
+                                SEARCH 
+____________________________________________________________________________
+____________________________________________________________________________
+
+Table 2: study of the complexity of the search operation for n random integers in 
+the range [-n,...,+n]
+
+f(n)=n^(1.00)
+g(n)=n^(1.28)
+h(n)=n^(1.65)
+
+	  n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+        8000       1025.000        0.081748        0.010346      0.0003721
+       16000       2413.000        0.092946        0.010030      0.0002791
+       32000       6018.000        0.111955        0.010301      0.0002218
+       64000      15269.000        0.137190        0.010762      0.0001793
+      128000      40530.000        0.175876        0.011764      0.0001517
+      256000     102546.000        0.214915        0.012257      0.0001223
+
+Discussion:
+
+- The third column which corresponds to the quotient between the measured time and the underestimated bound is increasing exponentially as n grows.
+
+- The fourth column which corresponds to the quotient between the measured time and the tight bound oscillates little around the constant c=0.010..., except for n=128000 and n=256000 in which the values are higher than the previously stated constant.
+
+- The fifth column which corresponds to the quotient between the measured time and the overestimated bound is decreasing exponentially as n grows.
+
+
+
+CONCLUSION:
+
+- In general we can see that with small values of n, performing the search operation of random numbers takes little less time than inserting random numbers. However, for big values of n starting at n=128000 it can be seen how the times highly increase for the search operation giving much higher values than the insertion operation.
+
+- The empirically obtained complexity for the insertion operation in this case is n^1.19 and for the search operation it is n^1.28, obtaining better results in both cases than using the theoretical complexity O(log n).
+
+- In the insertion operation, when computing the time for the first iteration of the insertion operation where n=8000, it would sometimes give even higher values than those with n=16000, which is an anomalous measurement.
+
+This anomalous measurement can be seen in this example:
+
+	n	      t(n)	  t(n)/f(n)	  t(n)/g(n)	 t(n)/h(n)
+___________________________________________________________________________
+        8000       3236.000        0.258086        0.073338      0.0011747
+       16000       2860.000        0.110164        0.028409      0.0003308
